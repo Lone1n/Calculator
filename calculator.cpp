@@ -66,7 +66,7 @@ void Calculator::digitClicked()
         waitingForOperand = false;
     }
 
-    display->setText(QString::number(digitValue));
+    display->setText(display->text() + QString::number(digitValue));
 }
 
 void Calculator::operatorClicked()
