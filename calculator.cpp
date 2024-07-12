@@ -53,6 +53,10 @@ void Calculator::createLayout()
     QPushButton *deleteButton = new QPushButton("Backspace");
     connect(deleteButton,&QPushButton::clicked,this,&Calculator::deleteClicked);
     buttonLayout->addWidget(deleteButton,0,2);
+
+    QPushButton *squareButton = new QPushButton("x²");
+    connect(squareButton,&QPushButton::clicked,this,&Calculator::squareClicked);
+    buttonLayout->addWidget(squareButton,0,1);
     mainLayout->addLayout(buttonLayout);
 }
 
@@ -107,6 +111,15 @@ void Calculator::deleteClicked()
     }
     display->setText(text);
 }
+
+void Calculator::squareClicked()
+{
+    double operand = display->text().toDouble();
+    double result = operand*operand;
+    display->setText(QString::number(result));
+    waitingForOperand = true;
+}
+
 void Calculator::equalClicked()
 {
     double operand = display->text().toDouble();

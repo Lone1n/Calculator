@@ -20,7 +20,7 @@ private slots:
     void clearClicked();
     void backspaceClicked();
     void deleteClicked();
-
+    void squareClicked();
 private:
     QLineEdit *display;
     double leftOperand;
