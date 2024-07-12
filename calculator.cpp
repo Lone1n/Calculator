@@ -32,7 +32,7 @@ void Calculator::createLayout()
     for (int i = 0; i < digitButtons.size(); ++i) {
         QPushButton *button = new QPushButton(digitButtons[i]);
         connect(button, &QPushButton::clicked, this, &Calculator::digitClicked);
-        buttonLayout->addWidget(button, positions[i][0], positions[i][1]);
+        buttonLayout->addWidget(button, positions[i][0]+1, positions[i][1]);
     }
 
     QStringList operators{"+", "-", "×", "÷"};
@@ -44,12 +44,15 @@ void Calculator::createLayout()
 
     QPushButton *equalButton = new QPushButton("=");
     connect(equalButton, &QPushButton::clicked, this, &Calculator::equalClicked);
-    buttonLayout->addWidget(equalButton, 3, 2);
+    buttonLayout->addWidget(equalButton, 4, 3);
 
     QPushButton *clearButton = new QPushButton("C");
     connect(clearButton, &QPushButton::clicked, this, &Calculator::clearClicked);
-    buttonLayout->addWidget(clearButton, 3, 0);
+    buttonLayout->addWidget(clearButton, 0, 0);
 
+    QPushButton *deleteButton = new QPushButton("Backspace");
+    connect(deleteButton,&QPushButton::clicked,this,&Calculator::deleteClicked);
+    buttonLayout->addWidget(deleteButton,0,2);
     mainLayout->addLayout(buttonLayout);
 }
 
@@ -93,6 +96,17 @@ void Calculator::operatorClicked()
     waitingForOperand = true;
 }
 
+void Calculator::deleteClicked()
+{
+    QString text = display->text();
+    text.chop(1);
+    if(text.isEmpty())
+    {
+        text = "0";
+        waitingForOperand = true;
+    }
+    display->setText(text);
+}
 void Calculator::equalClicked()
 {
     double operand = display->text().toDouble();

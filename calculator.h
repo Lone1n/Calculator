@@ -18,6 +18,8 @@ private slots:
     void operatorClicked();
     void equalClicked();
     void clearClicked();
+    void backspaceClicked();
+    void deleteClicked();
 
 private:
     QLineEdit *display;
