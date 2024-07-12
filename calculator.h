@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QGridLayout>
+#include <QCheckBox>
 
 class Calculator : public QWidget
 {
@@ -21,14 +22,16 @@ private slots:
     void backspaceClicked();
     void deleteClicked();
     void squareClicked();
+    void lightClicked();
 private:
     QLineEdit *display;
     double leftOperand;
     QString pendingOperator;
     bool waitingForOperand;
-
+    QCheckBox* lightButton;
     void createLayout();
     void abortOperation();
+    bool lightCheck;
     bool calculate(double rightOperand, const QString &operatorSymbol);
 };
 

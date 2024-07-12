@@ -7,11 +7,14 @@ Calculator::Calculator(QWidget *parent)
     display = new QLineEdit("0");
     display->setReadOnly(true);
     display->setAlignment(Qt::AlignRight);
+    display->setStyleSheet("background-color: gray;");
     display->setMaxLength(15);
 
     QFont font = display->font();
     font.setPointSize(font.pointSize() + 8);
     display->setFont(font);
+
+
 
     createLayout();
 
@@ -22,6 +25,11 @@ Calculator::Calculator(QWidget *parent)
 void Calculator::createLayout()
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    lightButton = new QCheckBox("&Light");
+    lightButton->setChecked(false);
+    connect(lightButton,&QPushButton::clicked,this,&Calculator::lightClicked);
+
+    mainLayout->addWidget(lightButton);
     mainLayout->addWidget(display);
 
     QGridLayout *buttonLayout = new QGridLayout;
@@ -32,6 +40,7 @@ void Calculator::createLayout()
     for (int i = 0; i < digitButtons.size(); ++i) {
         QPushButton *button = new QPushButton(digitButtons[i]);
         connect(button, &QPushButton::clicked, this, &Calculator::digitClicked);
+        button->setStyleSheet("background-color: gray; color : white;");
         buttonLayout->addWidget(button, positions[i][0]+1, positions[i][1]);
     }
 
@@ -39,27 +48,45 @@ void Calculator::createLayout()
     for (const QString &operatorSymbol : operators) {
         QPushButton *button = new QPushButton(operatorSymbol);
         connect(button, &QPushButton::clicked, this, &Calculator::operatorClicked);
+        button->setStyleSheet("background-color: gray; color : white;");
         buttonLayout->addWidget(button, operators.indexOf(operatorSymbol), 3);
     }
 
     QPushButton *equalButton = new QPushButton("=");
     connect(equalButton, &QPushButton::clicked, this, &Calculator::equalClicked);
+    equalButton->setStyleSheet("background-color: gray; color : white;");
     buttonLayout->addWidget(equalButton, 4, 3);
 
     QPushButton *clearButton = new QPushButton("C");
     connect(clearButton, &QPushButton::clicked, this, &Calculator::clearClicked);
+    clearButton->setStyleSheet("background-color: gray; color : white;");
     buttonLayout->addWidget(clearButton, 0, 0);
 
-    QPushButton *deleteButton = new QPushButton("Backspace");
+    QPushButton *deleteButton = new QPushButton("<-");
     connect(deleteButton,&QPushButton::clicked,this,&Calculator::deleteClicked);
+    deleteButton->setStyleSheet("background-color: gray; color : white;");
     buttonLayout->addWidget(deleteButton,0,2);
 
     QPushButton *squareButton = new QPushButton("x²");
     connect(squareButton,&QPushButton::clicked,this,&Calculator::squareClicked);
+    squareButton->setStyleSheet("background-color: gray; color : white;");
     buttonLayout->addWidget(squareButton,0,1);
     mainLayout->addLayout(buttonLayout);
 }
-
+void Calculator::lightClicked()
+{
+    QPalette pal = palette();
+    int nlight = lightButton->isChecked();
+    if(nlight == false)
+    {
+        pal.setColor(backgroundRole(),QColor(Qt::black));
+    }
+    else
+    {
+        pal.setColor(backgroundRole(),QColor(Qt::white));
+    }
+    setPalette(pal);
+}
 void Calculator::digitClicked()
 {
     QPushButton *clickedButton = qobject_cast<QPushButton *>(sender());
